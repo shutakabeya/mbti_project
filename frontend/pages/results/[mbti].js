@@ -11,8 +11,9 @@ const Results = () => {
   useEffect(() => {
     if (!mbti) return;
 
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"; // 環境変数を使用
     axios
-      .get(`http://localhost:5000/match/${mbti}`)
+      .get(`${apiUrl}/api/match/${mbti}`) // `/api/` を追加（Vercel用）
       .then((res) => setCompanies(res.data))
       .catch((err) => console.error("❌ APIエラー:", err))
       .finally(() => setLoading(false));
@@ -29,11 +30,9 @@ const Results = () => {
             <div key={index} className="col-md-6 col-lg-4 mb-4">
               <div className="card shadow-sm">
                 <div className="card-body">
-                <h5 className="card-title">{company.name} 
-                  ({company.industry})
-                  </h5>
+                  <h5 className="card-title">{company.name} ({company.industry})</h5>
                   {company.website && (
-                    <a href={company.website} target="_blank" rel="noopener noreferrer" className="btn btn-primary  btn-sm mt-2">
+                    <a href={company.website} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm mt-2">
                       企業サイトを見る
                     </a>
                   )}
@@ -50,7 +49,6 @@ const Results = () => {
       <a href="https://chatgpt.com/g/g-67d036b20ed88191b88eb6cf1b4f1eff-zhi-wen-tiyatuto" target="_blank" rel="noopener noreferrer" className="ai-icon">
         <img src="/AI.png" alt="AIコンシェルジュ" className="ai-icon-img" />
       </a>
-
     </div>
   );
 };

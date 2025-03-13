@@ -7,11 +7,13 @@ const Directory = () => {
   const [selectedMBTI, setSelectedMBTI] = useState("");
 
   useEffect(() => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"; // ✅ 環境変数を利用
     axios
-      .get("http://localhost:5000/companies")
+      .get(`${apiUrl}/api/companies`) // ✅ APIのパスを修正
       .then((res) => setCompanies(res.data))
       .catch((err) => console.error("エラー:", err));
   }, []);
+
 
   // ✅ すべての企業リストを保持
   const allCompanies = companies;
