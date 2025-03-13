@@ -22,11 +22,11 @@ export default function Home() {
     <div className="hero-section">
       <div className="container d-flex flex-column align-items-center justify-content-center vh-100">
         <div className="hero-card">
-          <h1 className="mb-4 fw-bold text-dark">あなたに合った企業を見つけよう</h1>
+          <h1 className="mb-4 fw-bold text-dark">行きたい企業を見つけよう</h1>
 
           {/* MBTI選択（プルダウン） */}
           <div className="mb-4">
-            <label className="form-label fw-bold mbti-selection-label">MBTIを選択：</label>
+            <label className="form-label fw-bold mbti-selection-label">あなたのMBTIを選択：</label>
             <select
               className="form-select text-center custom-dropdown"
               value={mbti}
