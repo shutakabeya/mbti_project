@@ -27,11 +27,39 @@ const Directory = () => {
   // すべての企業リストを保持
   const allCompanies = companies;
 
-  // 企業名で検索
+  // フリーワード検索
   const filteredCompanies = searchQuery
-    ? allCompanies.filter(company =>
-        company?.name?.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+    ? allCompanies.filter(company => {
+        const searchTerm = searchQuery.toLowerCase();
+        
+        // 基本情報の検索
+        const basicInfoMatch = 
+          (company?.name?.toLowerCase().includes(searchTerm)) ||
+          (company?.industry?.toLowerCase().includes(searchTerm)) ||
+          (company?.size?.toLowerCase().includes(searchTerm)) ||
+          (company?.profile?.toLowerCase().includes(searchTerm)) ||
+          (company?.business?.toLowerCase().includes(searchTerm));
+
+        // タグの検索
+        const tagsMatch = company?.tags?.some(tag => 
+          tag.toLowerCase().includes(searchTerm)
+        );
+
+        // カテゴリ別タグの検索
+        const categoryTagsMatch = 
+          (company?.workStyleTags?.some(tag => tag.toLowerCase().includes(searchTerm))) ||
+          (company?.cultureTags?.some(tag => tag.toLowerCase().includes(searchTerm))) ||
+          (company?.growthTags?.some(tag => tag.toLowerCase().includes(searchTerm))) ||
+          (company?.valuesTags?.some(tag => tag.toLowerCase().includes(searchTerm))) ||
+          (company?.relationshipTags?.some(tag => tag.toLowerCase().includes(searchTerm))) ||
+          (company?.customerTags?.some(tag => tag.toLowerCase().includes(searchTerm))) ||
+          (company?.workStyleTags?.some(tag => tag.toLowerCase().includes(searchTerm))) ||
+          (company?.evaluationTags?.some(tag => tag.toLowerCase().includes(searchTerm))) ||
+          (company?.diversityTags?.some(tag => tag.toLowerCase().includes(searchTerm))) ||
+          (company?.stabilityTags?.some(tag => tag.toLowerCase().includes(searchTerm)));
+
+        return basicInfoMatch || tagsMatch || categoryTagsMatch;
+      })
     : allCompanies;
 
   // MBTIごとの企業リスト
@@ -60,11 +88,11 @@ const Directory = () => {
   return (
     <div className="container mt-5">
       {/* 検索バー */}
-      <div className="directory-search text-center mb-4">
+      <div className="directory-search mb-2">
         <input
           type="text"
           className="form-control"
-          placeholder="企業名を検索..."
+          placeholder="企業名・業界・特徴で検索（例：人材 成長 裁量）"
           value={searchQuery}
           onChange={handleSearchChange}
         />

@@ -39,9 +39,14 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="nav-item">
-             <Link href="/contact" className="nav-link">
-              お問い合わせ
-             </Link>
+              <Link href="/mbti-about" className="nav-link">
+                記事一覧
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link href="/contact" className="nav-link">
+                お問い合わせ
+              </Link>
             </li>
           </ul>
         </div>

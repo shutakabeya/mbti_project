@@ -105,13 +105,12 @@ body {
 }
 
 .directory-search{
-  margin-top: 80px ;
+  margin-top: 80px;
   position: sticky;
-  top: 70px; /* ナビバーの高さ分だけ下げる */
-  z-index: 99; /* ナビバーの下にならないように */
-  padding: 10px 15px;
-  }
-  
+  top: 70px;
+  z-index: 99;
+  padding: 5px 10px;
+}
 
 /* 企業リスト */
 
@@ -172,4 +171,12 @@ body {
 .ai-icon-img {
   width: 50px;
   height: 50px;
+}
+
+/* 企業カードの特徴表示 */
+.company-features {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0.5rem 0;
+  line-height: 1.4;
 }

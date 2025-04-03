@@ -1,0 +1,98 @@
+.mbti-about-container {
+  padding-top: 2rem;
+  margin-top: 2rem;
+}
+
+.post-card {
+  transition: transform 0.2s;
+  height: 100%;
+}
+
+.post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.post-card .card-title {
+  color: #333;
+  font-weight: 600;
+}
+
+.post-card .card-subtitle {
+  font-size: 0.9rem;
+}
+
+.post-card .card-text {
+  color: #666;
+  line-height: 1.6;
+}
+
+.post-content {
+  line-height: 1.8;
+  color: #333;
+}
+
+.post-content p {
+  margin-bottom: 1rem;
+}
+
+.badge {
+  font-weight: 500;
+  padding: 0.5em 1em;
+}
+
+.btn-outline-primary {
+  border-width: 2px;
+}
+
+.btn-outline-primary:hover {
+  background-color: #0d6efd;
+  color: white;
+}
+
+/* 目次のスタイル */
+.table-of-contents {
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.table-of-contents h5 {
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.table-of-contents ul {
+  margin: 0;
+  padding: 0;
+}
+
+.table-of-contents li {
+  margin-bottom: 0.5rem;
+  transition: all 0.2s;
+}
+
+.table-of-contents li:hover {
+  transform: translateX(5px);
+}
+
+.table-of-contents a {
+  color: #0d6efd;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.table-of-contents a:hover {
+  color: #0a58ca;
+}
+
+@media (max-width: 768px) {
+  .mbti-about-container {
+    padding-top: 1rem;
+  }
+  
+  .post-card {
+    margin-bottom: 1rem;
+  }
+} 
