@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 const Directory = () => {
   const [companies, setCompanies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedMBTI, setSelectedMBTI] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -101,8 +103,8 @@ const Directory = () => {
                 <li
                   key={`${company.name || 'unknown'}-${index}`}
                   className="list-group-item d-flex justify-content-between align-items-center company-card"
-                  onClick={() => company.website && window.open(company.website, "_blank")}
-                  style={{ cursor: company.website ? "pointer" : "default" }}
+                  onClick={() => router.push(`/company/${company._id}`)}
+                  style={{ cursor: "pointer" }}
                 >
                   <div className="d-flex justify-content-between w-100">
                     <span className="text-primary">{company.name}</span>
@@ -137,8 +139,8 @@ const Directory = () => {
                 <li
                   key={`${company.name || 'unknown'}-${index}`}
                   className="list-group-item d-flex justify-content-between align-items-center company-card"
-                  onClick={() => company.website && window.open(company.website, "_blank")}
-                  style={{ cursor: company.website ? "pointer" : "default" }}
+                  onClick={() => router.push(`/company/${company._id}`)}
+                  style={{ cursor: "pointer" }}
                 >
                   <div className="d-flex justify-content-between w-100">
                     <span className="text-primary">{company.name}</span>

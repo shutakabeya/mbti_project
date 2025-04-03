@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Link from "next/link";
 
 const Results = () => {
   const router = useRouter();
@@ -43,11 +44,9 @@ const Results = () => {
                     {company.name} 
                     {company.industry && ` (${company.industry})`}
                   </h5>
-                  {company.website && (
-                    <a href={company.website} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm mt-2">
-                      企業サイトを見る
-                    </a>
-                  )}
+                  <Link href={`/company/${company._id}`} className="btn btn-primary btn-sm mt-2">
+                    企業の詳細を見る
+                  </Link>
                 </div>
               </div>
             </div>

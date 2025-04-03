@@ -224,6 +224,26 @@ app.get("/api/debug/fix-data", async (req, res) => {
   }
 });
 
+// ✅ 企業詳細を取得するAPIエンドポイント
+app.get("/api/company/:id", async (req, res) => {
+  try {
+    const company = await Company.findById(req.params.id);
+    
+    if (!company) {
+      return res.status(404).json({
+        message: "企業が見つかりませんでした"
+      });
+    }
+    
+    res.json(company);
+  } catch (err) {
+    console.error("❌ 企業詳細取得エラー:", err);
+    res.status(500).json({
+      message: "企業詳細の取得中にエラーが発生しました"
+    });
+  }
+});
+
 // ✅ Vercel用のPORT設定
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 サーバー起動: http://localhost:${PORT}`));
