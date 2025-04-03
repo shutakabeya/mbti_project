@@ -46,10 +46,10 @@ const CompanyDetail = () => {
       {/* ヒーローカード */}
       <div className="card shadow-sm rounded-3 mb-4">
         <div className="card-body p-4">
-          <h1 className="h2 mb-2">{company.name}</h1>
-          <div className="d-flex align-items-center gap-3">
-            <span className="badge bg-primary fs-5">{company.industry}</span>
-            <span className="badge bg-info text-dark fs-5">{company.mbti}</span>
+          <h1 className="company-name mb-2">{company.name}</h1>
+          <div className="d-flex flex-wrap align-items-center gap-2 company-badges">
+            <span className="badge bg-primary">{company.industry}</span>
+            <span className="badge bg-info text-dark">{company.mbti}</span>
           </div>
         </div>
       </div>

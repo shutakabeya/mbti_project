@@ -65,7 +65,7 @@ const Results = () => {
   return (
     <div className="container mt-5">
       <h1 className="results-title responsive-title">診断結果</h1>
-      <p className="text-center mb-4">気になることがあったらAIチャットで聞いてみよう！</p>
+      <p className="text-center mb-4 ai-chat-text">気になることがあったらAIチャットで聞いてみよう！</p>
       <div className="row g-2">
         {companies.length > 0 ? (
           companies.map((company, index) => {

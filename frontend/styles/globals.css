@@ -180,3 +180,50 @@ body {
   margin: 0.5rem 0;
   line-height: 1.4;
 }
+
+/* AIチャット案内文 */
+.ai-chat-text {
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .ai-chat-text {
+    font-size: 0.9rem;
+    padding: 0 10px;
+  }
+}
+
+/* 企業詳細ページ */
+.company-name {
+  font-size: 1.75rem;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.company-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.company-badges .badge {
+  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .company-name {
+    font-size: 1.5rem;
+  }
+  
+  .company-badges .badge {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+  }
+}
