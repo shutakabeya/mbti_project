@@ -11,11 +11,20 @@ const Results = () => {
   useEffect(() => {
     if (!mbti) return;
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"; // 環境変数を使用
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+    console.log(`API URL: ${apiUrl}/api/match/${mbti}`); // デバッグ用
+    
     axios
-      .get(`${apiUrl}/api/match/${mbti}`) // `/api/` を追加（Vercel用）
-      .then((res) => setCompanies(res.data))
-      .catch((err) => console.error("❌ APIエラー:", err))
+      .get(`${apiUrl}/api/match/${mbti}`)
+      .then((res) => {
+        console.log("API Response:", res.data); // デバッグ用
+        // companiesプロパティからデータを取得
+        setCompanies(res.data.companies || []);
+      })
+      .catch((err) => {
+        console.error("❌ APIエラー:", err.response?.data || err.message);
+        setCompanies([]); // エラー時は空の配列を設定
+      })
       .finally(() => setLoading(false));
   }, [mbti]);
 
@@ -23,14 +32,17 @@ const Results = () => {
 
   return (
     <div className="container mt-5">
-      <h1 className="results-title responsive-title">診断結果</h1> {/* ✅ ナビバーとの余白を追加 */}
+      <h1 className="results-title responsive-title">診断結果</h1>
       <div className="row g-2">
         {companies.length > 0 ? (
           companies.map((company, index) => (
             <div key={index} className="col-md-6 col-lg-4 mb-4">
               <div className="card shadow-sm">
                 <div className="card-body">
-                  <h5 className="card-title">{company.name} ({company.industry})</h5>
+                  <h5 className="card-title">
+                    {company.name} 
+                    {company.industry && ` (${company.industry})`}
+                  </h5>
                   {company.website && (
                     <a href={company.website} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm mt-2">
                       企業サイトを見る

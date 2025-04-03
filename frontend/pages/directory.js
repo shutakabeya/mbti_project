@@ -7,26 +7,33 @@ const Directory = () => {
   const [selectedMBTI, setSelectedMBTI] = useState("");
 
   useEffect(() => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"; // ✅ 環境変数を利用
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+    console.log(`API URL: ${apiUrl}/api/companies`); // デバッグ用
+    
     axios
-      .get(`${apiUrl}/api/companies`) // ✅ APIのパスを修正
-      .then((res) => setCompanies(res.data))
-      .catch((err) => console.error("エラー:", err));
+      .get(`${apiUrl}/api/companies`)
+      .then((res) => {
+        console.log("API Response:", res.data); // デバッグ用
+        setCompanies(res.data);
+      })
+      .catch((err) => {
+        console.error("❌ APIエラー:", err.response?.data || err.message);
+        setCompanies([]);
+      });
   }, []);
 
-
-  // ✅ すべての企業リストを保持
+  // すべての企業リストを保持
   const allCompanies = companies;
 
-  // ✅ 企業名で検索
+  // 企業名で検索
   const filteredCompanies = searchQuery
     ? allCompanies.filter(company =>
-        company.name.toLowerCase().includes(searchQuery.toLowerCase())
+        company?.name?.toLowerCase().includes(searchQuery.toLowerCase())
       )
-    : null;
+    : allCompanies;
 
-  // ✅ MBTIごとの企業リスト
-  const groupedCompanies = companies.reduce((acc, company) => {
+  // MBTIごとの企業リスト
+  const groupedCompanies = filteredCompanies.reduce((acc, company) => {
     const mbti = company.mbti?.trim();
     if (mbti && mbti !== "MBTI") {
       if (!acc[mbti]) acc[mbti] = [];
@@ -50,8 +57,7 @@ const Directory = () => {
 
   return (
     <div className="container mt-5">
-
-{/* ✅ 検索バー */}
+      {/* 検索バー */}
       <div className="directory-search text-center mb-4">
         <input
           type="text"
@@ -64,9 +70,7 @@ const Directory = () => {
 
       <h1 className="text-center mb-4 directory-title responsive-title">企業名鑑</h1>
 
-      
-
-      {/* ✅ MBTI選択プルダウン（検索中は非表示） */}
+      {/* MBTI選択プルダウン（検索中は非表示） */}
       {!searchQuery && (
         <div className="text-center mb-4">
           <label className="form-label me-2">MBTIを選択：</label>
@@ -88,17 +92,17 @@ const Directory = () => {
         </div>
       )}
 
-      {/* ✅ 検索結果を表示 */}
+      {/* 検索結果を表示 */}
       {searchQuery ? (
         <>
           <ul className="list-group">
             {filteredCompanies.length > 0 ? (
-              filteredCompanies.map((company) => (
+              filteredCompanies.map((company, index) => (
                 <li
-                  key={company.name}
+                  key={`${company.name || 'unknown'}-${index}`}
                   className="list-group-item d-flex justify-content-between align-items-center company-card"
-                  onClick={() => window.open(company.website, "_blank")}
-                  style={{ cursor: "pointer" }}
+                  onClick={() => company.website && window.open(company.website, "_blank")}
+                  style={{ cursor: company.website ? "pointer" : "default" }}
                 >
                   <div className="d-flex justify-content-between w-100">
                     <span className="text-primary">{company.name}</span>
@@ -110,7 +114,7 @@ const Directory = () => {
               <p className="text-center text-muted">該当する企業が見つかりません。</p>
             )}
           </ul>
-          {/* 🔄 検索後のボタン（企業名鑑のトップへ戻る） */}
+          {/* 検索後のボタン（企業名鑑のトップへ戻る） */}
           <div className="text-center mt-4">
             <button
               className="btn btn-secondary"
@@ -124,17 +128,17 @@ const Directory = () => {
           </div>
         </>
       ) : (
-        // ✅ 検索バーが空なら通常のMBTIごとのリストを表示
+        // 検索バーが空なら通常のMBTIごとのリストを表示
         Object.keys(groupedCompanies).map((mbti) => (
           <div key={mbti} id={mbti} className="mb-4">
             <h3 className="mb-3 text-primary">{mbti} の企業</h3>
             <ul className="list-group">
-              {groupedCompanies[mbti].map((company) => (
+              {groupedCompanies[mbti].map((company, index) => (
                 <li
-                  key={company.name}
+                  key={`${company.name || 'unknown'}-${index}`}
                   className="list-group-item d-flex justify-content-between align-items-center company-card"
-                  onClick={() => window.open(company.website, "_blank")}
-                  style={{ cursor: "pointer" }}
+                  onClick={() => company.website && window.open(company.website, "_blank")}
+                  style={{ cursor: company.website ? "pointer" : "default" }}
                 >
                   <div className="d-flex justify-content-between w-100">
                     <span className="text-primary">{company.name}</span>
