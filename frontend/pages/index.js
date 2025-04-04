@@ -20,9 +20,9 @@ export default function Home() {
 
   return (
     <div className="hero-section">
-      <div className="container d-flex flex-column align-items-center justify-content-center vh-100">
+      <div className="container d-flex flex-column align-items-center justify-content-center" style={{ minHeight: 'calc(100vh - 70px)' }}>
         <div className="hero-card">
-          <h1 className="mb-4 fw-bold text-dark" style={{ fontSize: '2.5rem' }}>行きたい企業を見つけよう</h1>
+          <h1 className="mb-4 fw-bold text-dark text-center" style={{ fontSize: '2.5rem' }}>行きたい企業を見つけよう</h1>
 
           {/* MBTI選択（プルダウン） */}
           <div className="mb-4">

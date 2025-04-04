@@ -86,9 +86,9 @@ const Directory = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-2">
       {/* 検索バー */}
-      <div className="directory-search mb-2">
+      <div className="directory-search">
         <input
           type="text"
           className="form-control"
@@ -98,7 +98,7 @@ const Directory = () => {
         />
       </div>
 
-      <h1 className="text-center mb-4 directory-title responsive-title">企業名鑑</h1>
+      <h1 className="text-center mb-3 directory-title responsive-title">企業名鑑</h1>
 
       {/* MBTI選択プルダウン（検索中は非表示） */}
       {!searchQuery && (

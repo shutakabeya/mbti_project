@@ -60,7 +60,7 @@ const MBTIAbout = () => {
 
   return (
     <div className="container mt-4">
-      <h1 className="mb-4">記事一覧</h1>
+      <h1 className="mb-4 text-center">記事一覧</h1>
       
       {/* 記事一覧 */}
       <div className="row">
