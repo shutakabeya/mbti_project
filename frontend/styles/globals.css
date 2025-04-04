@@ -9,7 +9,7 @@
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  background: linear-gradient(180deg, #e3edf7, #f7f9fc);
+  background-color: #f8f9fa;
   color: var(--foreground);
   font-family: "Arial", sans-serif;
 }
@@ -39,8 +39,8 @@ body {
 
 /* 🔹 診断結果タイトルの余白を調整 */
 .results-title {
-  margin-top: 100px; 
-  margin-bottom: 30px;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
   font-size: 2.5rem;
   font-weight: bold;
   text-align: center;
@@ -98,14 +98,14 @@ body {
 
 /* 企業名鑑タイトル */
 .directory-title {
-  margin-top: 20px ;
+  margin-top: 1.5rem;
   text-align: center;
   font-size: 2.2rem;
   font-weight: bold;
 }
 
-.directory-search{
-  margin-top: 80px;
+.directory-search {
+  margin-top: 1.5rem;
   position: sticky;
   top: 70px;
   z-index: 99;
@@ -132,15 +132,15 @@ body {
   cursor: pointer;
 }
 
-.contact-title{
-  margin-top: 80px;
+.contact-title {
+  margin-top: 1.5rem;
   font-weight: bold;
 }
 
 /* スマホ対応のフォントサイズ調整 */
 @media (max-width: 768px) {
   h1 {
-    font-size: 1.8rem !important; /* 小さめの見出し */
+    font-size: 1.8rem !important;
   }
 
   .hero-card h1 {
@@ -195,6 +195,7 @@ body {
 
 /* 企業詳細ページ */
 .company-name {
+  margin-top: 1rem;
   font-size: 1.75rem;
   font-weight: bold;
   white-space: nowrap;
@@ -203,6 +204,7 @@ body {
 }
 
 .company-badges {
+  margin-top: 1rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -226,4 +228,39 @@ body {
     font-size: 0.8rem;
     padding: 0.4rem 0.6rem;
   }
+}
+
+/* メインコンテンツのコンテナ */
+.container {
+  margin-top: 1rem !important;
+  padding-top: 0.5rem !important;
+}
+
+/* 診断結果のカードのスタイリング */
+.card.shadow-sm {
+  margin-bottom: 1.5rem;
+}
+
+.card-body.text-center {
+  padding: 2rem;
+}
+
+/* 企業名鑑のスタイリング */
+.company-list {
+  margin-top: 1rem;
+}
+
+.company-card {
+  margin-bottom: 1.5rem;
+}
+
+/* 企業詳細ページのスタイリング */
+.company-detail {
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+}
+
+.back-button {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
 }
