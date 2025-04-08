@@ -1,16 +1,15 @@
 import { useEffect } from "react";
 import Link from "next/link";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 const Navbar = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
-      require("bootstrap/dist/js/bootstrap.bundle.min.js"); // ✅ JSを適用
+      require("bootstrap/dist/js/bootstrap.bundle.min.js");
     }
   }, []);
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <nav className="navbar navbar-expand-lg navbar-dark">
       <div className="container">
         <Link href="/" className="navbar-brand fw-bold">
           MBTI企業マッチング
