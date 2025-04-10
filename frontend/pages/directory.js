@@ -2,6 +2,25 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 
+const mbtiNicknames = {
+  INTJ: "建築家",
+  INTP: "論理学者",
+  ENTJ: "指揮官",
+  ENTP: "討論者",
+  INFJ: "提唱者",
+  INFP: "仲介者",
+  ENFJ: "主人公",
+  ENFP: "広報運動家",
+  ISTJ: "管理者",
+  ISFJ: "擁護者",
+  ESTJ: "幹部",
+  ESFJ: "領事",
+  ISTP: "巨匠",
+  ISFP: "冒険家",
+  ESTP: "起業家",
+  ESFP: "エンターテイナー"
+};
+
 const Directory = () => {
   const [companies, setCompanies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -112,7 +131,7 @@ const Directory = () => {
             <option value="">選択してください</option>
             {Object.keys(groupedCompanies).map((mbti) => (
               <option key={mbti} value={mbti}>
-                {mbti}
+                {mbti} ({mbtiNicknames[mbti]})
               </option>
             ))}
           </select>
@@ -136,7 +155,7 @@ const Directory = () => {
                 >
                   <div className="d-flex justify-content-between w-100">
                     <span className="text-primary">{company.name}</span>
-                    <span className="text-muted">{company.mbti}</span>
+                    <span className="text-muted">{company.mbti} ({mbtiNicknames[company.mbti]})</span>
                   </div>
                 </li>
               ))
@@ -161,7 +180,7 @@ const Directory = () => {
         // 検索バーが空なら通常のMBTIごとのリストを表示
         Object.keys(groupedCompanies).map((mbti) => (
           <div key={mbti} id={mbti} className="mb-4">
-            <h3 className="mb-3 text-primary">{mbti} の企業</h3>
+            <h3 className="mb-3 text-primary">{mbti} ({mbtiNicknames[mbti]}) の企業</h3>
             <ul className="list-group">
               {groupedCompanies[mbti].map((company, index) => (
                 <li
