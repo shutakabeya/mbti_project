@@ -58,8 +58,28 @@ const CompanyDetail = () => {
       <div className="card shadow-sm rounded-3 mb-4">
         <div className="card-body p-4">
           <h2 className="h4 mb-3">プロフィール</h2>
-          <p className="mb-2"><strong>企業規模：</strong>{company.company_size}</p>
-          <p className="mb-0">{company.company_profile}</p>
+          <p className="mb-4">{company.company_profile}</p>
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <p className="mb-2"><strong>企業規模：</strong>{company.company_size}</p>
+              <p className="mb-2"><strong>設立年：</strong>{company.established_year || '未公開'}</p>
+              <p className="mb-2"><strong>昨年度売上高：</strong>{company.last_year_sales || '未公開'}</p>
+              <p className="mb-2"><strong>本社所在地：</strong>{company.headquarters_location || '未公開'}</p>
+            </div>
+            <div className="col-md-6 mb-3">
+              <p className="mb-2"><strong>入社難易度：</strong></p>
+              <div className="difficulty-rating">
+                {[...Array(5)].map((_, index) => (
+                  <i
+                    key={index}
+                    className={`bi bi-star${index < company.hiring_difficulty ? '-fill' : ''} text-warning`}
+                    style={{ fontSize: '1.5rem' }}
+                  />
+                ))}
+                <span className="ms-2">{company.hiring_difficulty} / 5</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

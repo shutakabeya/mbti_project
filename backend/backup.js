@@ -2,13 +2,16 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const fs = require('fs');
 
-// MongoDBに接続
-mongoose.connect(process.env.MONGO_URI, {
+// MongoDB接続
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/mbti_project', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
 .then(() => console.log("✅ MongoDB 接続成功"))
-.catch((err) => console.error("❌ MongoDB 接続エラー:", err));
+.catch((err) => {
+  console.error("❌ MongoDB 接続エラー:", err);
+  process.exit(1);
+});
 
 const CompanySchema = new mongoose.Schema({
   name: String,
@@ -26,7 +29,25 @@ const CompanySchema = new mongoose.Schema({
   work_type_score: Number,
   evaluation_score: Number,
   diversity_score: Number,
-  stability_score: Number
+  stability_score: Number,
+  hiring_difficulty: {
+    type: Number,
+    min: 1,
+    max: 5,
+    required: true
+  },
+  established_year: {
+    type: String,
+    required: false
+  },
+  last_year_sales: {
+    type: String,
+    required: false
+  },
+  headquarters_location: {
+    type: String,
+    required: true
+  }
 });
 
 const Company = mongoose.model("Company", CompanySchema);

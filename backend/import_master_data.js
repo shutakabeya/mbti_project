@@ -90,8 +90,27 @@ fs.createReadStream(path.join(__dirname, '..', 'マスターデータ.csv'), { e
         data['26']
       ].filter(step => step && step.trim() !== ''),
       deadline_schedule: data['28']?.trim() || '',
-      interview_questions: data['29']?.trim() || ''
+      interview_questions: data['29']?.trim() || '',
+      hiring_difficulty: parseInt(data['37']) || 0,
+      established_year: data['38']?.trim() || '未公開',
+      last_year_sales: data['39']?.trim() || '未公開',
+      headquarters_location: data['40']?.trim() || '未公開'
     };
+
+    // デバッグ情報の出力
+    if (results.length === 0) {
+      console.log("デバッグ情報:");
+      console.log("入社難易度の生データ:", data['37']);
+      console.log("設立年の生データ:", data['38']);
+      console.log("昨年度売上高の生データ:", data['39']);
+      console.log("本社所在地の生データ:", data['40']);
+      console.log("変換後のデータ:", {
+        hiring_difficulty: company.hiring_difficulty,
+        established_year: company.established_year,
+        last_year_sales: company.last_year_sales,
+        headquarters_location: company.headquarters_location
+      });
+    }
 
     // 企業名が空の場合はスキップ
     if (!company.name) {
@@ -143,7 +162,11 @@ fs.createReadStream(path.join(__dirname, '..', 'マスターデータ.csv'), { e
         stability_tags: [String],
         selection_process: [String],
         deadline_schedule: String,
-        interview_questions: String
+        interview_questions: String,
+        hiring_difficulty: Number,
+        established_year: String,
+        last_year_sales: String,
+        headquarters_location: String
       }));
 
       await Company.deleteMany({});
