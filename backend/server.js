@@ -63,17 +63,17 @@ const Company = mongoose.model("Company", CompanySchema);
 app.get("/api/match/:mbti", async (req, res) => {
   try {
     const { mbti } = req.params;
-    const companies = await Company.find({ mbti });
+    const companies = await Company.find({ matches: mbti });
     
     if (companies.length === 0) {
       return res.status(404).json({
-        message: `${mbti}タイプにマッチする企業が見つかりませんでした`
+        message: `${mbti}タイプと相性の良い企業が見つかりませんでした`
       });
     }
     
     res.json({
       companies,
-      message: `${mbti}タイプにマッチする企業を取得しました`
+      message: `${mbti}タイプと相性の良い企業を取得しました`
     });
   } catch (err) {
     console.error("❌ 企業検索エラー:", err);
