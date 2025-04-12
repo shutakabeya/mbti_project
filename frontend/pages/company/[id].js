@@ -15,13 +15,30 @@ const CompanyDetail = () => {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
     
+    console.log("🔍 企業詳細取得リクエスト開始:", {
+      id,
+      apiUrl,
+      timestamp: new Date().toISOString()
+    });
+    
     axios
       .get(`${apiUrl}/api/company/${id}`)
       .then((res) => {
+        console.log("📊 企業詳細取得レスポンス:", {
+          id: res.data._id,
+          name: res.data.name,
+          website: res.data.website,
+          matches: res.data.matches,
+          timestamp: new Date().toISOString()
+        });
         setCompany(res.data);
       })
       .catch((err) => {
-        console.error("❌ 企業詳細取得エラー:", err);
+        console.error("❌ 企業詳細取得エラー:", {
+          error: err.message,
+          response: err.response?.data,
+          timestamp: new Date().toISOString()
+        });
         setError("企業詳細の取得中にエラーが発生しました");
       })
       .finally(() => setLoading(false));

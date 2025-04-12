@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 
 // ✅ 環境変数からMongoDBのURLを取得
 mongoose
-  .connect(process.env.MONGO_URI, {
+  .connect(process.env.MONGO_URI || 'mongodb://localhost:27017/mbti_project', {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -54,7 +54,11 @@ const CompanySchema = new mongoose.Schema({
   stability_tags: [String],
   selection_process: [String],
   deadline_schedule: String,
-  interview_questions: String
+  interview_questions: String,
+  hiring_difficulty: Number,
+  established_year: String,
+  last_year_sales: String,
+  headquarters_location: String
 });
 
 const Company = mongoose.model("Company", CompanySchema);
@@ -94,20 +98,15 @@ app.get("/api/companies", async (req, res) => {
   }
 });
 
-// デバッグ用エンドポイント
+// 会社一覧を取得するデバッグエンドポイント
 app.get("/api/debug/companies", async (req, res) => {
   try {
-    const companies = await Company.find();
-    console.log("データベース内の企業数:", companies.length);
-    console.log("MBTIタイプの分布:", companies.reduce((acc, company) => {
-      acc[company.mbti] = (acc[company.mbti] || 0) + 1;
-      return acc;
-    }, {}));
-    
+    const companies = await Company.find({}, 'name _id website matches').limit(5);
+    console.log("デバッグ: 会社一覧を取得しました");
     res.json(companies);
   } catch (err) {
-    console.error("❌ デバッグデータ取得エラー:", err);
-    res.status(500).json({ error: "デバッグデータ取得エラー" });
+    console.error("デバッグエラー:", err);
+    res.status(500).json({ error: "デバッグエラー" });
   }
 });
 
@@ -227,9 +226,23 @@ app.get("/api/debug/fix-data", async (req, res) => {
 // ✅ 企業詳細を取得するAPIエンドポイント
 app.get("/api/company/:id", async (req, res) => {
   try {
+    console.log("🔍 企業詳細取得リクエスト:", {
+      id: req.params.id,
+      timestamp: new Date().toISOString()
+    });
+
     const company = await Company.findById(req.params.id);
     
+    console.log("📊 取得した企業データ:", {
+      id: company?._id,
+      name: company?.name,
+      website: company?.website,
+      matches: company?.matches,
+      timestamp: new Date().toISOString()
+    });
+    
     if (!company) {
+      console.log("❌ 企業が見つかりませんでした:", req.params.id);
       return res.status(404).json({
         message: "企業が見つかりませんでした"
       });
@@ -237,15 +250,210 @@ app.get("/api/company/:id", async (req, res) => {
     
     res.json(company);
   } catch (err) {
-    console.error("❌ 企業詳細取得エラー:", err);
+    console.error("❌ 企業詳細取得エラー:", {
+      error: err.message,
+      stack: err.stack,
+      timestamp: new Date().toISOString()
+    });
     res.status(500).json({
       message: "企業詳細の取得中にエラーが発生しました"
     });
   }
 });
 
+// 特定の企業のデータを確認するエンドポイント
+app.get("/api/debug/company/:id", async (req, res) => {
+  try {
+    console.log("🔍 デバッグ: 企業データ確認リクエスト:", {
+      id: req.params.id,
+      timestamp: new Date().toISOString()
+    });
+
+    const company = await Company.findById(req.params.id);
+    
+    if (!company) {
+      return res.status(404).json({
+        message: "企業が見つかりませんでした"
+      });
+    }
+
+    // データベースの直接確認用のログ
+    console.log("📊 デバッグ: データベースから取得した企業データ:", {
+      _id: company._id,
+      name: company.name,
+      website: company.website,
+      matches: company.matches,
+      createdAt: company.createdAt,
+      updatedAt: company.updatedAt,
+      timestamp: new Date().toISOString()
+    });
+    
+    res.json({
+      message: "企業データを確認しました",
+      data: {
+        _id: company._id,
+        name: company.name,
+        website: company.website,
+        matches: company.matches,
+        createdAt: company.createdAt,
+        updatedAt: company.updatedAt
+      }
+    });
+  } catch (err) {
+    console.error("❌ デバッグ: 企業データ確認エラー:", {
+      error: err.message,
+      stack: err.stack,
+      timestamp: new Date().toISOString()
+    });
+    res.status(500).json({
+      message: "企業データの確認中にエラーが発生しました"
+    });
+  }
+});
+
+// Webサイトを更新するエンドポイント
+app.get("/api/debug/update-website/:id", async (req, res) => {
+  try {
+    console.log("🔄 Webサイト更新リクエスト:", {
+      id: req.params.id,
+      timestamp: new Date().toISOString()
+    });
+
+    const company = await Company.findById(req.params.id);
+    if (!company) {
+      return res.status(404).json({
+        message: "企業が見つかりませんでした"
+      });
+    }
+
+    // 更新前のデータをログ
+    console.log("📊 更新前の企業データ:", {
+      _id: company._id,
+      name: company.name,
+      website: company.website,
+      timestamp: new Date().toISOString()
+    });
+
+    // 新しいWebサイトURLを設定
+    const oldWebsite = company.website;
+    company.website = "https://career.kddi.com/"; // 正しい採用サイトURLに修正
+
+    await company.save();
+
+    // 更新後のデータをログ
+    console.log("✅ 更新後の企業データ:", {
+      _id: company._id,
+      name: company.name,
+      website: company.website,
+      oldWebsite: oldWebsite,
+      timestamp: new Date().toISOString()
+    });
+
+    res.json({
+      message: "Webサイトを更新しました",
+      data: {
+        _id: company._id,
+        name: company.name,
+        website: company.website,
+        oldWebsite: oldWebsite
+      }
+    });
+  } catch (err) {
+    console.error("❌ Webサイト更新エラー:", {
+      error: err.message,
+      stack: err.stack,
+      timestamp: new Date().toISOString()
+    });
+    res.status(500).json({
+      message: "Webサイトの更新中にエラーが発生しました"
+    });
+  }
+});
+
+// データベースの内容を詳細に確認するエンドポイント
+app.get("/api/debug/company-details/:id", async (req, res) => {
+  try {
+    console.log("🔍 企業データ詳細確認リクエスト:", {
+      id: req.params.id,
+      timestamp: new Date().toISOString()
+    });
+
+    const company = await Company.findById(req.params.id);
+    
+    if (!company) {
+      return res.status(404).json({
+        message: "企業が見つかりませんでした"
+      });
+    }
+
+    // データベースの生データをログ
+    console.log("📊 データベースの生データ:", {
+      _id: company._id,
+      name: company.name,
+      website: company.website,
+      rawData: company.toObject(), // 生のデータを取得
+      timestamp: new Date().toISOString()
+    });
+    
+    res.json({
+      message: "企業データの詳細を確認しました",
+      data: company.toObject() // 生のデータを返す
+    });
+  } catch (err) {
+    console.error("❌ 企業データ詳細確認エラー:", {
+      error: err.message,
+      stack: err.stack,
+      timestamp: new Date().toISOString()
+    });
+    res.status(500).json({
+      message: "企業データの詳細確認中にエラーが発生しました"
+    });
+  }
+});
+
+// データベースの生データを確認するエンドポイント
+app.get("/api/debug/raw-data/:id", async (req, res) => {
+  try {
+    console.log("🔍 生データ確認リクエスト:", {
+      id: req.params.id,
+      timestamp: new Date().toISOString()
+    });
+
+    const company = await Company.findById(req.params.id);
+    
+    if (!company) {
+      return res.status(404).json({
+        message: "企業が見つかりませんでした"
+      });
+    }
+
+    // データベースの生データをログ
+    console.log("📊 データベースの生データ:", {
+      _id: company._id,
+      name: company.name,
+      website: company.website,
+      rawData: company.toObject(), // 生のデータを取得
+      timestamp: new Date().toISOString()
+    });
+    
+    res.json({
+      message: "生データを確認しました",
+      data: company.toObject() // 生のデータを返す
+    });
+  } catch (err) {
+    console.error("❌ 生データ確認エラー:", {
+      error: err.message,
+      stack: err.stack,
+      timestamp: new Date().toISOString()
+    });
+    res.status(500).json({
+      message: "生データの確認中にエラーが発生しました"
+    });
+  }
+});
+
 // ✅ Vercel用のPORT設定
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 サーバー起動: http://localhost:${PORT}`));
 
 module.exports = app; // VercelのAPIルートで使うため
